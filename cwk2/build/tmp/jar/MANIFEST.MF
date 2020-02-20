@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: comp3222.cwk2.MainKt
-
