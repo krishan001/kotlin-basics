@@ -29,28 +29,49 @@ class RainfallDataset(){
             dataset.add(m)
         }
 
-
-        
-        printStats(station,lat,long,elevation, fileData.size)
-
-
-    }
-
-    fun getHighestRainfall(ds : MutableListOf<Measurement>){
-        val highest = 0
-        for (i in 0 until ds.size){
-            println(i)
+        // Get highest Rainfall
+        var highest = 0.0
+        var highestIndex :Int = 0
+        for (i in 0 until dataset.size){
+            if (dataset[i].level > highest){
+                highest = dataset[i].level
+                highestIndex = i
+            }
+        }
+        // Get lowest Rainfall
+        var lowest: Double = Double.MAX_VALUE
+        var lowestIndex :Int = 0
+        for (i in 0 until dataset.size){
+            if (dataset[i].level < lowest){
+                lowest = dataset[i].level
+                lowestIndex = i
+            }
         }
 
+        
+        printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex])
+
+
     }
 
-    fun printStats(station: String, lat: String, long: String, elevation: String, numRecords: Int){
+    // fun getHighestRainfall(ds : MutableListOf<Measurement>){
+    //     val highest = 0
+    //     for (i in 0 until ds.size){
+    //         println(i)
+    //     }
+
+    // }
+
+    fun printStats(station: String, lat: String, long: String, elevation: String, numRecords: Int, highest: Measurement, lowest:Measurement){
         val output = """
         |Station: $station
         |Latitude: $lat
         |Longitude: $long
         |Elevation: $elevation m
-        |Number of records: $numRecords"""
+        |Number of records: $numRecords
+        |Wettest Month: ${highest.month} ${highest.year} (${highest.level} mm)
+        |Driest Month: ${lowest.month} ${lowest.year} (${lowest.level} mm)
+        """
         println(output.trimMargin())
     }
 }
@@ -58,17 +79,12 @@ class RainfallDataset(){
 
 class Measurement(record: String){
     val measurements = (record.split(" ")).toMutableList()
-    val r = mutableListOf<String>()
     init{
-        measurements.forEach{
-            if (it != ""){
-                r.add(it)
-            }
-        }
+        measurements.removeAll{it == ""}
     }
-    val year = r[0]
+    val year = measurements[0]
     
-    val month = when(r[1]){
+    val month = when(measurements[1]){
         "1"-> "January"
         "2"-> "Febuary"
         "3"-> "March"
@@ -84,7 +100,7 @@ class Measurement(record: String){
         else -> throw Exception("Bad Month")
 
     }
-    val level = r[5]
+    val level = measurements[5].toDouble()
 
 
 
