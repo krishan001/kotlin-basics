@@ -28,7 +28,8 @@ class RainfallDataset(){
             val m = Measurement(it)
             dataset.add(m)
         }
-
+        val firstYear = dataset[0].year
+        val lastYear = dataset[dataset.size-1].year
         // Get highest Rainfall
         var highest = 0.0
         var highestIndex :Int = 0
@@ -49,7 +50,7 @@ class RainfallDataset(){
         }
 
         
-        printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex])
+        printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex], firstYear, lastYear)
 
 
     }
@@ -62,15 +63,18 @@ class RainfallDataset(){
 
     // }
 
-    fun printStats(station: String, lat: String, long: String, elevation: String, numRecords: Int, highest: Measurement, lowest:Measurement){
+    fun printStats(station: String, lat: String, long: String, elevation: String, numRecords: Int, highest: Measurement, lowest:Measurement,
+    firstYear: String, lastYear: String){
         val output = """
         |Station: $station
         |Latitude: $lat
         |Longitude: $long
         |Elevation: $elevation m
         |Number of records: $numRecords
+        |Years Spanned: $firstYear to $lastYear
         |Wettest Month: ${highest.month} ${highest.year} (${highest.level} mm)
         |Driest Month: ${lowest.month} ${lowest.year} (${lowest.level} mm)
+
         """
         println(output.trimMargin())
     }
