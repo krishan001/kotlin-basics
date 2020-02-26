@@ -31,16 +31,88 @@ class RainfallDataset(){
         val firstYear = dataset[0].year
         val lastYear = dataset[dataset.size-1].year
         // Get highest Rainfall
-        var highest = 0.0
-        var highestIndex :Int = 0
+
+        val highestIndex:Int = getHighestRainfall()
+
+
+        // Get lowest Rainfall
+        val lowestIndex:Int = getLowestRainfall()
+
+
+        // Wettest year
+        val wettestYear: String = getWettestYear()
+
+
+        // Driest Year
+        val driestYear: String = getDriestYear()
+
+        printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex], firstYear, lastYear, wettestYear, driestYear)
+
+
+    }
+    fun getWettestYear():String{
+        var wettestYear: String = "0000"
+        var avgRainfall: Double = 0.0
+        var sum:Double=0.0
+        var count:Int=0
+
+        var currentYear = dataset[0].year
+        for (i in 0 until dataset.size){
+            if (dataset[i].year == currentYear){
+                sum += dataset[i].level
+                count += 1
+            }else{
+                if((sum/count) > avgRainfall){
+                    wettestYear = dataset[i-1].year
+                    avgRainfall = sum/count
+                }
+                sum = 0.0
+                count = 0
+            }
+            currentYear = dataset[i].year
+        }
+        return wettestYear
+    }
+
+    fun getDriestYear():String{
+        var driestYear: String = "0000"
+        var lowestRainfall: Double = Double.MAX_VALUE
+        var sum:Double=0.0
+        var currentYear = dataset[0].year
+        
+        for (i in 0 until dataset.size){
+            if (dataset[i].year == currentYear){
+                sum += dataset[i].level
+            }else{
+                if( sum < lowestRainfall){
+                    driestYear = dataset[i-1].year
+                    lowestRainfall = sum
+                }
+                sum = 0.0
+            }
+            currentYear = dataset[i].year
+            // println(currentYear)
+            // println(driestYear)
+            // println(lowestRainfall)
+        }
+        return driestYear
+    }
+
+    fun getHighestRainfall():Int{
+        var highest: Double = 0.0
+        var highestIndex:Int = 0
         for (i in 0 until dataset.size){
             if (dataset[i].level > highest){
                 highest = dataset[i].level
                 highestIndex = i
             }
         }
-        // var highestIndex:Int = getHighestRainfall(dataset)
-        // Get lowest Rainfall
+
+        return highestIndex
+
+    }
+
+    fun getLowestRainfall():Int{
         var lowest: Double = Double.MAX_VALUE
         var lowestIndex :Int = 0
         for (i in 0 until dataset.size){
@@ -49,29 +121,11 @@ class RainfallDataset(){
                 lowestIndex = i
             }
         }
-
-        
-        printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex], firstYear, lastYear)
-
-
+        return lowestIndex
     }
 
-    // fun getHighestRainfall(ds:mutableListOf<Measurement>):Int{
-    //     var highest: Double = 0.0
-    //     var highestIndex:Int = 0
-    //     for (i in 0 until ds.size){
-    //         if (ds[i].level > highest){
-    //             highest = ds[i].level
-    //             highestIndex = i
-    //         }
-    //     }
-
-    //     return highestIndex
-
-    // }
-
     fun printStats(station: String, lat: String, long: String, elevation: String, numRecords: Int, highest: Measurement, lowest:Measurement,
-    firstYear: String, lastYear: String){
+    firstYear: String, lastYear: String, wettestYear: String, driestYear: String){
         val output = """
         |Station: $station
         |Latitude: $lat
@@ -79,8 +133,11 @@ class RainfallDataset(){
         |Elevation: $elevation m
         |Number of records: $numRecords
         |Years Spanned: $firstYear to $lastYear
+        |Wettest Year: $wettestYear
+        |Driest Year: $driestYear
         |Wettest Month: ${highest.month} ${highest.year} (${highest.level} mm)
         |Driest Month: ${lowest.month} ${lowest.year} (${lowest.level} mm)
+
 
         """
         println(output.trimMargin())
