@@ -52,25 +52,26 @@ class RainfallDataset(){
     }
     fun getWettestYear():String{
         var wettestYear: String = "0000"
-        var avgRainfall: Double = 0.0
+        var highestRainfall: Double = 0.0
         var sum:Double=0.0
-        var count:Int=0
-
         var currentYear = dataset[0].year
+
+
         for (i in 0 until dataset.size){
             if (dataset[i].year == currentYear){
+                println(currentYear)
                 sum += dataset[i].level
-                count += 1
             }else{
-                if((sum/count) > avgRainfall){
+                currentYear = dataset[i].year
+                if(sum > highestRainfall){
                     wettestYear = dataset[i-1].year
-                    avgRainfall = sum/count
+                    highestRainfall = sum
                 }
                 sum = 0.0
-                count = 0
             }
-            currentYear = dataset[i].year
+
         }
+        println("Highest Rainfall: WRONG "+highestRainfall)
         return wettestYear
     }
 
@@ -79,7 +80,7 @@ class RainfallDataset(){
         var lowestRainfall: Double = Double.MAX_VALUE
         var sum:Double=0.0
         var currentYear = dataset[0].year
-        
+
         for (i in 0 until dataset.size){
             if (dataset[i].year == currentYear){
                 sum += dataset[i].level
