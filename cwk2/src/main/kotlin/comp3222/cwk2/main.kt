@@ -39,6 +39,7 @@ class RainfallDataset(){
                 highestIndex = i
             }
         }
+        // var highestIndex:Int = getHighestRainfall(dataset)
         // Get lowest Rainfall
         var lowest: Double = Double.MAX_VALUE
         var lowestIndex :Int = 0
@@ -55,11 +56,17 @@ class RainfallDataset(){
 
     }
 
-    // fun getHighestRainfall(ds : MutableListOf<Measurement>){
-    //     val highest = 0
+    // fun getHighestRainfall(ds:mutableListOf<Measurement>):Int{
+    //     var highest: Double = 0.0
+    //     var highestIndex:Int = 0
     //     for (i in 0 until ds.size){
-    //         println(i)
+    //         if (ds[i].level > highest){
+    //             highest = ds[i].level
+    //             highestIndex = i
+    //         }
     //     }
+
+    //     return highestIndex
 
     // }
 
