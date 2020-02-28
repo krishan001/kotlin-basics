@@ -30,7 +30,7 @@ class RainfallDataset(){
         }
         val firstYear = dataset[0].year
         val lastYear = dataset[dataset.size-1].year
-        
+
         // Get highest Rainfall
         val highestIndex:Int = getHighestRainfall()
         // Get lowest Rainfall
@@ -66,8 +66,8 @@ class RainfallDataset(){
 
             i++
         }
-        
-        return wettestYear
+        val yearAndLevel = wettestYear + " (" + highestRainfall + "mm)"
+        return yearAndLevel
     }
 
     fun getDriestYear():String{
@@ -75,8 +75,6 @@ class RainfallDataset(){
         var lowestRainfall: Double = Double.MAX_VALUE
         var sum:Double=0.0
         var currentYear = dataset[0].year
-
-
 
         var i = 0
         while(i <= dataset.size -1){
@@ -94,7 +92,9 @@ class RainfallDataset(){
 
             i++
         }
-        return driestYear
+        val yearAndLevel = driestYear + " (" + lowestRainfall + "mm)"
+
+        return yearAndLevel
     }
 
     fun getHighestRainfall():Int{
