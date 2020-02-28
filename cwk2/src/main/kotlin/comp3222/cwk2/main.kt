@@ -13,21 +13,30 @@ class RainfallDataset(){
     val dataset = mutableListOf<Measurement>()
 
     fun readFile(file : String){
+        // add the data from the file to a mutable list
         File(file).forEachLine{
             fileData.add(it)
         }
+
+        // get the details of the file
         val station = fileData[0]
         val record = fileData[1].split(",")
         val lat = record[1].split(" ")[2]
         val long = record[1].split(" ")[4]
         val elevation = record[2].split(" ")[1]
+
+        // remove the first 4 lines
         for (i in 0..3){
             fileData.removeAt(0)
         }
+
+        // create a measurement object for each element in the dataset and add it to a mutable list
         fileData.forEach{
             val m = Measurement(it)
             dataset.add(m)
         }
+
+        // get the first and last years
         val firstYear = dataset[0].year
         val lastYear = dataset[dataset.size-1].year
 
@@ -42,8 +51,8 @@ class RainfallDataset(){
 
         printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex], firstYear, lastYear, wettestYear, driestYear)
 
-
     }
+
     fun getWettestYear():String{
         var wettestYear: String = "0000"
         var highestRainfall: Double = 0.0
@@ -108,7 +117,6 @@ class RainfallDataset(){
         }
 
         return highestIndex
-
     }
 
     fun getLowestRainfall():Int{
