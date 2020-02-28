@@ -30,19 +30,13 @@ class RainfallDataset(){
         }
         val firstYear = dataset[0].year
         val lastYear = dataset[dataset.size-1].year
+        
         // Get highest Rainfall
-
         val highestIndex:Int = getHighestRainfall()
-
-
         // Get lowest Rainfall
         val lowestIndex:Int = getLowestRainfall()
-
-
         // Wettest year
         val wettestYear: String = getWettestYear()
-
-
         // Driest Year
         val driestYear: String = getDriestYear()
 
@@ -100,18 +94,6 @@ class RainfallDataset(){
 
             i++
         }
-        // for (i in 0 until dataset.size){
-        //     if (dataset[i].year == currentYear){
-        //         sum += dataset[i].level
-        //     }else{
-        //         if( sum < lowestRainfall){
-        //             driestYear = dataset[i-1].year
-        //             lowestRainfall = sum
-        //         }
-        //         sum = 0.0
-        //     }
-        //     currentYear = dataset[i].year
-        // }
         return driestYear
     }
 
