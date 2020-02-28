@@ -56,13 +56,13 @@ class RainfallDataset(){
         var sum:Double=0.0
         var currentYear = dataset[0].year
 
-
-        for (i in 0 until dataset.size){
+        var i = 0
+        while(i <= dataset.size -1){
             if (dataset[i].year == currentYear){
-                println(currentYear)
                 sum += dataset[i].level
             }else{
                 currentYear = dataset[i].year
+                i--
                 if(sum > highestRainfall){
                     wettestYear = dataset[i-1].year
                     highestRainfall = sum
@@ -70,8 +70,9 @@ class RainfallDataset(){
                 sum = 0.0
             }
 
+            i++
         }
-        println("Highest Rainfall: WRONG "+highestRainfall)
+        
         return wettestYear
     }
 
@@ -81,21 +82,36 @@ class RainfallDataset(){
         var sum:Double=0.0
         var currentYear = dataset[0].year
 
-        for (i in 0 until dataset.size){
+
+
+        var i = 0
+        while(i <= dataset.size -1){
             if (dataset[i].year == currentYear){
                 sum += dataset[i].level
             }else{
-                if( sum < lowestRainfall){
+                currentYear = dataset[i].year
+                i--
+                if(sum < lowestRainfall){
                     driestYear = dataset[i-1].year
                     lowestRainfall = sum
                 }
                 sum = 0.0
             }
-            currentYear = dataset[i].year
-            // println(currentYear)
-            // println(driestYear)
-            // println(lowestRainfall)
+
+            i++
         }
+        // for (i in 0 until dataset.size){
+        //     if (dataset[i].year == currentYear){
+        //         sum += dataset[i].level
+        //     }else{
+        //         if( sum < lowestRainfall){
+        //             driestYear = dataset[i-1].year
+        //             lowestRainfall = sum
+        //         }
+        //         sum = 0.0
+        //     }
+        //     currentYear = dataset[i].year
+        // }
         return driestYear
     }
 
