@@ -1,7 +1,7 @@
 package comp3222.cwk2
 import java.io.File
 import kotlin.math.roundToInt
-
+import kotlin.system.exitProcess
 class RainfallDataset(){
     val fileData = mutableListOf<String>()
     val dataset = mutableListOf<Measurement>()
@@ -13,12 +13,16 @@ class RainfallDataset(){
         }
 
         // get the details of the file
+        if (fileData.size < 4){
+            println("File does not contain a valid header")
+            exitProcess(1)
+        }
         val station = fileData[0]
         val record = fileData[1].split(",")
         val lat = record[1].split(" ")[2]
         val long = record[1].split(" ")[4]
         val elevation = record[2].split(" ")[1]
-
+        
         // remove the first 4 lines
         for (i in 0..3){
             fileData.removeAt(0)
@@ -27,6 +31,7 @@ class RainfallDataset(){
         // create a measurement object for each element in the dataset and add it to a mutable list
         fileData.forEach{
             val m = Measurement(it)
+            checkValidity(m)
             dataset.add(m)
         }
 
@@ -46,7 +51,15 @@ class RainfallDataset(){
         printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex], firstYear, lastYear, wettestYear, driestYear)
 
     }
-
+    fun checkValidity(m: Measurement){
+         if(m.year.toInt() < 1930){
+            println("Year is earlier than 1930")
+            exitProcess(1)
+        }  else if(m.level < 0.0){
+            println("Rainfall value is negative")
+            exitProcess(1)
+        }
+    }
     fun getWettestYear():String{
         var wettestYear: String = "0000"
         var highestRainfall: Double = 0.0
