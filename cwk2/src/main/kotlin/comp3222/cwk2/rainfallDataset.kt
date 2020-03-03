@@ -1,5 +1,6 @@
 package comp3222.cwk2
 import java.io.File
+import kotlin.math.roundToInt
 
 class RainfallDataset(){
     val fileData = mutableListOf<String>()
@@ -141,5 +142,24 @@ class RainfallDataset(){
 
         """
         println(output.trimMargin())
+    }
+
+    fun printBarChart(file:String, year: String){
+        readFile(file)
+        val monthlyValues = dataset.filter({it.year == year})
+        monthlyValues.forEach{
+            val hs = getHashes(it.level)
+            println("${it.month} (${it.level}): $hs" )
+        }
+    }
+
+    fun getHashes(level:Double):String{
+        val highestLevel: Double = dataset[getHighestRainfall()].level
+        val numHashes:Int = ((level/highestLevel) * 50).roundToInt()
+        var hashString = ""
+        repeat(numHashes){
+            hashString+="#"
+        }
+        return hashString
     }
 }

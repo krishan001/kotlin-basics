@@ -4,7 +4,13 @@ package comp3222.cwk2
 
 fun main(args: Array<String>){
     val rd = RainfallDataset()
-    rd.readFile(args[0])
+    if (args.size == 1){
+        rd.readFile(args[0])
+    }else{
+        rd.printBarChart(args[0],args[1])
+    }
+
+
 }
 
 

@@ -24,4 +24,5 @@ class Measurement(record: String){
     }
     val level = measurements[5].toDouble()
 
+    
 }
