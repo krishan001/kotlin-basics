@@ -2,6 +2,7 @@
 package comp3222.cwk2
 
 class Measurement(record: String){
+    // class to contain all of the information about a particular measurement
     val measurements = (record.split(" ")).toMutableList().apply{removeAll(listOf(""))}
 
     val year = measurements[0]
