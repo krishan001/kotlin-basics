@@ -28,7 +28,7 @@ class RainfallDataset(){
         elevation = record[2].split(" ")[1]
         if (fileData.size == 4){
             printStats(station, lat, long, elevation)
-            throw badFileException("There is no data in this file")
+            throw badFileException("Number of records: 0")
         }
         // remove the first 4 lines
         for (i in 0..3){
