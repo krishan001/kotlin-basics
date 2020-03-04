@@ -114,7 +114,8 @@ class RainfallDataset(){
 
             i++
         }
-        val yearAndLevel = driestYear + " (" + lowestRainfall + "mm)"
+        val lowestRainfall1Dp = String.format("%.1f", lowestRainfall).toDouble()
+        val yearAndLevel = driestYear + " (" + lowestRainfall1Dp + "mm)"
 
         return yearAndLevel
     }
