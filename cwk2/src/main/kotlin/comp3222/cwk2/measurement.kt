@@ -19,7 +19,7 @@ class Measurement(record: String){
         "10" -> "October"
         "11" -> "November"
         "12" -> "December"
-        else -> throw Exception("Bad Month")
+        else -> throw badFileException("Month needs to be in range 1-12")
 
     }
     val level = measurements[5].toDouble()

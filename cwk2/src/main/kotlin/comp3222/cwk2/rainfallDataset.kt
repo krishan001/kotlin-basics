@@ -1,11 +1,16 @@
 package comp3222.cwk2
 import java.io.File
 import kotlin.math.roundToInt
-import kotlin.system.exitProcess
 class RainfallDataset(){
     val fileData = mutableListOf<String>()
     val dataset = mutableListOf<Measurement>()
-
+    var station: String = ""
+    var record= listOf<String>()
+    var lat: String = ""
+    var long: String = ""
+    var elevation: String = ""
+    var firstYear = ""
+    var lastYear = ""
     fun readFile(file : String){
         // add the data from the file to a mutable list
         File(file).forEachLine{
@@ -14,15 +19,17 @@ class RainfallDataset(){
 
         // get the details of the file
         if (fileData.size < 4){
-            println("File does not contain a valid header")
-            exitProcess(1)
+            throw badFileException("File does not contain a valid header")
         }
-        val station = fileData[0]
-        val record = fileData[1].split(",")
-        val lat = record[1].split(" ")[2]
-        val long = record[1].split(" ")[4]
-        val elevation = record[2].split(" ")[1]
-        
+        station = fileData[0]
+        record = fileData[1].split(",")
+        lat = record[1].split(" ")[2]
+        long = record[1].split(" ")[4]
+        elevation = record[2].split(" ")[1]
+        if (fileData.size == 4){
+            printStats(station, lat, long, elevation)
+            throw badFileException("There is no data in this file")
+        }
         // remove the first 4 lines
         for (i in 0..3){
             fileData.removeAt(0)
@@ -36,28 +43,15 @@ class RainfallDataset(){
         }
 
         // get the first and last years
-        val firstYear = dataset[0].year
-        val lastYear = dataset[dataset.size-1].year
-
-        // Get highest Rainfall
-        val highestIndex:Int = getHighestRainfall()
-        // Get lowest Rainfall
-        val lowestIndex:Int = getLowestRainfall()
-        // Wettest year
-        val wettestYear: String = getWettestYear()
-        // Driest Year
-        val driestYear: String = getDriestYear()
-
-        printStats(station,lat,long,elevation, fileData.size, dataset[highestIndex], dataset[lowestIndex], firstYear, lastYear, wettestYear, driestYear)
+        firstYear = dataset[0].year
+        lastYear = dataset[dataset.size-1].year
 
     }
     fun checkValidity(m: Measurement){
          if(m.year.toInt() < 1930){
-            println("Year is earlier than 1930")
-            exitProcess(1)
+             throw badFileException("Year is less than 1930")
         }  else if(m.level < 0.0){
-            println("Rainfall value is negative")
-            exitProcess(1)
+            throw badFileException("Rainfall value is invalid")
         }
     }
     fun getWettestYear():String{
@@ -125,6 +119,31 @@ class RainfallDataset(){
 
         return highestIndex
     }
+    fun getHighestMonth():String{
+        val index = getHighestRainfall()
+        return dataset[index].month
+    }
+    fun getHighestYear():String{
+        val index = getHighestRainfall()
+        return dataset[index].year
+    }
+    fun getHighestLevel():String{
+        val index = getHighestRainfall()
+        return dataset[index].level.toString()
+    }
+
+    fun getLowestMonth():String{
+        val index = getLowestRainfall()
+        return dataset[index].month
+    }
+    fun getLowestYear():String{
+        val index = getLowestRainfall()
+        return dataset[index].year
+    }
+    fun getLowestLevel():String{
+        val index = getLowestRainfall()
+        return dataset[index].level.toString()
+    }
 
     fun getLowestRainfall():Int{
         var lowest: Double = Double.MAX_VALUE
@@ -138,21 +157,12 @@ class RainfallDataset(){
         return lowestIndex
     }
 
-    fun printStats(station: String, lat: String, long: String, elevation: String, numRecords: Int, highest: Measurement, lowest:Measurement,
-    firstYear: String, lastYear: String, wettestYear: String, driestYear: String){
+    fun printStats(station: String, lat: String, long: String, elevation: String){
         val output = """
         |Station: $station
         |Latitude: $lat
         |Longitude: $long
         |Elevation: $elevation m
-        |Number of records: $numRecords
-        |Years Spanned: $firstYear to $lastYear
-        |Wettest Year: $wettestYear
-        |Driest Year: $driestYear
-        |Wettest Month: ${highest.month} ${highest.year} (${highest.level} mm)
-        |Driest Month: ${lowest.month} ${lowest.year} (${lowest.level} mm)
-
-
         """
         println(output.trimMargin())
     }
