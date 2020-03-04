@@ -11,10 +11,6 @@ fun main(args: Array<String>){
 
             // format the output 
             val output = """
-            |Station: ${rd.station}
-            |Latitude: ${rd.lat}
-            |Longitude: ${rd.long}
-            |Elevation: ${rd.elevation} m
             |Number of records: ${rd.fileData.size}
             |Years Spanned: ${rd.firstYear} to ${rd.lastYear}
             |Wettest Year: ${rd.getWettestYear()}

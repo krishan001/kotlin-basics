@@ -5,11 +5,11 @@ class RainfallDataset(){
     // define global variables so that they can be accessed from main
     val fileData = mutableListOf<String>()
     val dataset = mutableListOf<Measurement>()
-    var station: String = ""
-    var record= listOf<String>()
-    var lat: String = ""
-    var long: String = ""
-    var elevation: String = ""
+    // var station: String = ""
+    // var record= listOf<String>()
+    // var lat: String = ""
+    // var long: String = ""
+    // var elevation: String = ""
     var firstYear = ""
     var lastYear = ""
 
@@ -26,11 +26,11 @@ class RainfallDataset(){
         }
 
         // get the header information
-        station = fileData[0]
-        record = fileData[1].split(",")
-        lat = record[1].split(" ")[2]
-        long = record[1].split(" ")[4]
-        elevation = record[2].split(" ")[1]
+       val station = fileData[0]
+       val record = fileData[1].split(",")
+       val lat = record[1].split(" ")[2]
+       val long = record[1].split(" ")[4]
+       val elevation = record[2].split(" ")[1]
 
         // if there is only the header then just print out the header information
         if (fileData.size == 4){
@@ -48,7 +48,7 @@ class RainfallDataset(){
             checkValidity(m)
             dataset.add(m)
         }
-
+        printHeader(station, lat, long, elevation)
         // get the first and last years
         firstYear = dataset[0].year
         lastYear = dataset[dataset.size-1].year
@@ -210,7 +210,7 @@ class RainfallDataset(){
     fun getHashes(level:Double):String{
         val highestLevel: Double = dataset[getHighestRainfall()].level
         // compute the number of hashes
-        val numHashes:Int = ((level/highestLevel) * 50).roundToInt()
+        val numHashes:Int = ((level/highestLevel) * 100).roundToInt()
         var hashString = ""
         // add hashes to string
         repeat(numHashes){
